@@ -1,5 +1,5 @@
 <?php
-//premier commit
+//deuxieme commit
 require_once("include/fct.inc.php");
 require_once ("include/class.pdogsb.inc.php");
 include("vues/v_entete.php") ;
@@ -23,4 +23,3 @@ switch($uc){
 }
 include("vues/v_pied.php") ;
 ?>
-
