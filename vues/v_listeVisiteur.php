@@ -1,5 +1,4 @@
-<form class="form-inline" action="index.php?uc= " method="post">    <!-- a completer -->
-    <fieldset>	 
+<fieldset>	 
         <legend>Visiteur à sélectionner: </legend>
         <div class="form-group">
         <label for="lstVisiteur">Visiteur :</label> 
@@ -20,7 +19,6 @@
             ?>    
             
         </select>
-        <button type="submit" class="btn btn-primary">Rechercher</button>        
+        <!--<button type="submit" class="btn btn-primary">Rechercher</button>-->        
        </div>
-    </fieldset>
-</form>
+</fieldset>

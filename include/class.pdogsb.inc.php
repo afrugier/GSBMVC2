@@ -318,9 +318,18 @@ class PdoGsb{
         
         public function getVisiteur()
         {
-            $req = "SELECT CONCAT(  `nom`,' ', `prenom` ) FROM  `visiteur`";
-            PdoGsb::$monPdo->exec($req);
-            $result = mysql_fetch_array($req);
+            $req = "SELECT `id`,`nom`,`prenom` FROM  `visiteur`";
+            $res = PdoGsb::$monPdo->query($req);
+            $lesvisiteur =array();
+            $laLigne = $res->fetch();
+            while($laLigne != null)	{
+			$nom = $laLigne['nom'];
+			$prenom = $laLigne['prenom'] ;
+			$id = $laLigne['id'];
+			$lesvisiteur["$id"]=array("id"=>"$id","nom"  => "$nom","prenom"  => "$prenom");
+			$laLigne = $res->fetch(); 		
+		}
+		return $lesvisiteur;
         }
 }
 ?>
