@@ -318,7 +318,7 @@ class PdoGsb{
         
         public function getVisiteur()
         {
-            $req = "SELECT `id`,`nom`,`prenom` FROM  `visiteur`";
+            $req = "SELECT id, nom, prenom FROM visiteur order by nom ";
             $res = PdoGsb::$monPdo->query($req);
             $lesvisiteur =array();
             $laLigne = $res->fetch();
