@@ -31,6 +31,10 @@
            <li>
               <a href="index.php?uc=validFrais" title="Validez fiche de frais">Validez fiche de frais</a>
            </li>
+           
+           <li>
+              <a href="index.php?uc=creationUtilisateur" title="CreationUtilisateur">Créer un utilisateur</a>
+           </li>
            <?php
         }
         ?>

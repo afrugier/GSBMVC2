@@ -200,4 +200,121 @@ function nbErreurs(){
 	   return count($_REQUEST['erreurs']);
 	}
 }
+
+function creaUtilisateur($nom, $prenom, $type, $adresse = null, $cp = null, $ville = null, $jour = null, $mois = null, $annee = null)
+{
+    $complMsg = "";
+    $tabInfos = array();
+    $infosCompl = false;
+    
+    if (isset($_POST['valider']))
+    {
+        extract($_POST);
+        // contrôle de la saisie si type = visiteur
+        
+        if ($type == "visiteur")
+        {
+            if( (strlen($adresse) > 0) && (strlen($cp) == 5) && (is_numeric($cp)) && (is_string($ville)) && (strlen($ville) > 0) )
+            {
+                if ( (is_numeric($jour)) && (is_numeric($mois)) && (is_numeric($annee)) )
+                {
+                    $dateEmbauche = $annee."-".$mois."-".$jour;
+                    $infosCompl = true;
+                }
+                else
+                {
+                    $complMsg = "Date d'embauche incorrecte";
+                }
+            }
+            else
+            {
+                $complMsg = "Informations postales erronées";
+            }
+        }
+        else
+        {
+            $infosCompl = true;
+        }
+        
+        // si les deux champs sont remplis
+        
+        if ( (is_string($nom)) && (is_string($prenom)) && (!is_numeric($nom)) && (!is_numeric($prenom)) && ($nom != "") && ($prenom != "") && (isset($_POST['type'])) && $infosCompl == true )
+        {
+            $type = $_POST['type'];
+            // génération id BdD
+            $idUtilisateur = genereID();
+            // génération mot de passe
+            $mdp = genereMdP();
+            $mdpmd5 = md5($mdp);
+            // login
+            $login = strtolower($nom[0].$prenom);
+            // connexion à la BdD // -------------------------------
+            // infos connexion
+            $user = "root";
+            $mdpdb = "";
+            // "mysql:host=[ADRESSE DU SERVEUR] ; dbname = "base de donnée"";
+            $bdd = "mysql:host=localhost;dbname=gsb_frais_2ea_2014_g4_new";
+            // en cas de non-connexion, affichage de l'erreur
+            $connexion = new PDO($bdd, $user, $mdpdb) or die (print_r($bdd ->errorInfo()));
+            $connexion ->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            // AJOUT DU COMPTABLE
+            $ajoutUtilisateur = "INSERT INTO utilisateur (`login`, `mdp`, `type`) VALUES (:login, :mdp, :type);";
+            $utilisateur = $connexion ->prepare($ajoutUtilisateur);
+            $utilisateur ->bindParam(":login", $login, PDO::PARAM_STR, 20);
+            $utilisateur ->bindParam(":mdp", $mdpmd5, PDO::PARAM_STR, 100);
+            $utilisateur ->bindParam(":type", $type, PDO::PARAM_STR, 10);
+            $PDOutilisateur = $utilisateur -> execute();
+            
+            // si l'opération s'est bien passée, on continue
+            if ($PDOutilisateur)
+            {
+                if ($type == "comptable")
+                {
+                    $ajoutTypeUtilisateur = "INSERT INTO comptable (`id`, `nom`, `prenom`, `login`) VALUES (:id, :nom, :prenom, :login);";
+                    $typeUtilisateur = $connexion ->prepare($ajoutTypeUtilisateur);
+                    $typeUtilisateur ->bindParam(":id", $idUtilisateur, PDO::PARAM_STR, 4);
+                    $typeUtilisateur ->bindParam(":nom", $nom, PDO::PARAM_STR, 30);
+                    $typeUtilisateur ->bindParam(":prenom", $prenom, PDO::PARAM_STR, 30);
+                    $typeUtilisateur ->bindParam(":login", $login, PDO::PARAM_STR, 20);
+                }
+                else
+                {
+                    $ajoutTypeUtilisateur = "INSERT INTO visiteur (`id`, `nom`, `prenom`, `login`, `adresse`, `cp`, `ville`, `dateEmbauche`) VALUES (:id, :nom, :prenom, :login, :adresse, :cp, :ville, :dateEmbauche);";
+                    $typeUtilisateur = $connexion ->prepare($ajoutTypeUtilisateur);
+                    $typeUtilisateur ->bindParam(":id", $idUtilisateur, PDO::PARAM_STR, 4);
+                    $typeUtilisateur ->bindParam(":nom", $nom, PDO::PARAM_STR, 30);
+                    $typeUtilisateur ->bindParam(":prenom", $prenom, PDO::PARAM_STR, 30);
+                    $typeUtilisateur ->bindParam(":login", $login, PDO::PARAM_STR, 20);
+                    $typeUtilisateur ->bindParam(":adresse", $adresse, PDO::PARAM_STR, 30);
+                    $typeUtilisateur ->bindParam(":cp", $cp, PDO::PARAM_STR, 5);
+                    $typeUtilisateur ->bindParam(":ville", $ville, PDO::PARAM_STR, 30);
+                    $typeUtilisateur ->bindParam(":dateEmbauche", $dateEmbauche, PDO::PARAM_STR, 20);
+                }
+                
+                $PDOtypeUtilisateur = $typeUtilisateur -> execute();
+                
+                if ($PDOtypeUtilisateur)
+                {
+                    //$message = "L'utilisateur a été crée en tant que ".$type.".";
+                    $tabInfos['loginForm'] = $login;
+                    $tabInfos['mdpForm'] = $mdp;
+                    return $tabInfos;
+                    //$classe = "alert alert-success";
+                }
+                else
+                {
+                    ajouterErreur("Erreur lors de l'opération (table comptable).", "creationUtilisateur");
+                }
+            }
+            else
+            {
+                ajouterErreur("Erreur lors de l'opération (table utilisateur).", "creationUtilisateur");
+            }
+        }
+        else
+        {
+            ajouterErreur("Tous les champs doivent être renseignés correctement.<br>".$complMsg, "creationUtilisateur");
+        }
+    }
+}
 ?>
