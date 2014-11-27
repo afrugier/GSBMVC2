@@ -5,7 +5,11 @@
         
         <h4>
             <?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?>
-        </h4>
+       </h4> 
+        
+        <h5>
+            <?php if ($_SESSION["type"] == "Com"){ echo "(Comptable)"; } else if ($_SESSION["type"] == "Vis"){ echo "(Visiteur)"; } ?>
+        </h5>
            
         <ul class="list-unstyled">
 			
