@@ -14,8 +14,8 @@
 					$quantite = $unFrais['quantite'];
 			?>
 					<p>
-						<label><?php echo $libelle ?></label>
-						<input type="text"  name="lesFrais[<?php echo $idFrais?>]" size="10" maxlength="5" value="<?php echo $quantite?>" >
+                                            <label><?php echo $libelle ?></label>
+                                            <input type="text"  name="lesFrais[<?php echo $idFrais?>]" size="10" maxlength="5" value="<?php echo $quantite?>" >
 					</p>
 			
 			<?php
