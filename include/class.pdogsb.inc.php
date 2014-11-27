@@ -314,5 +314,13 @@ class PdoGsb{
 		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
 		PdoGsb::$monPdo->exec($req);
 	}
+        
+        
+        public function getVisiteur()
+        {
+            $req = "SELECT CONCAT(  `nom`,' ', `prenom` ) FROM  `visiteur`";
+            PdoGsb::$monPdo->exec($req);
+            $result = mysql_fetch_array($req);
+        }
 }
 ?>

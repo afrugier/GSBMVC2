@@ -29,7 +29,7 @@
         {
             ?>
            <li>
-              <a href="index.php?uc=etatFrais&action=voirEtatFrais" title="Validez fiche de frais">Validez fiche de frais</a>
+              <a href="index.php?uc=validFrais" title="Validez fiche de frais">Validez fiche de frais</a>
            </li>
            <?php
         }
