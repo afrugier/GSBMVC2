@@ -53,12 +53,28 @@ class PdoGsb{
  * @param $mdp
  * @return l'id, le nom et le prénom sous la forme d'un tableau associatif 
 */
-	public function getInfosVisiteur($login, $mdp){
-		$req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
-		where visiteur.login='$login' and visiteur.mdp='$mdp'";
-		$rs = PdoGsb::$monPdo->query($req);
-		$ligne = $rs->fetch();
-		return $ligne;
+	public function getInfosVisiteur($login, $mdp)
+        {
+            $req = "select utilisateur.type as type from utilisateur 
+            where utilisateur.login='$login' and utilisateur.mdp=md5('$mdp')";
+            $rs = PdoGsb::$monPdo->query($req);
+            $ligne = $rs->fetch();
+
+            $_SESSION["type"]  = $ligne["type"];
+
+            if ($ligne["type"] == "Vis")
+            {
+                $query = "select visiteur.id as id, visiteur.nom, visiteur.prenom from visiteur where visiteur.login='$login'";
+                $rs = PdoGsb::$monPdo->query($query);
+                $ligne = $rs->fetch();
+            }
+            else if ($ligne["type"] == "Com")
+            {
+                $query = "select comptable.id as id, comptable.nom, comptable.prenom from comptable where comptable.login='$login'";
+                $rs = PdoGsb::$monPdo->query($query);
+                $ligne = $rs->fetch();
+            }
+            return $ligne;
 	}
 
 /**
