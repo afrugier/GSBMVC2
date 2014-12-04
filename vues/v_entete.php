@@ -7,7 +7,11 @@
     <link href="./bootstrap/css/bootstrap.css" rel="stylesheet" media="screen"> 
     <link href="./styles/styles.css" rel="stylesheet" media="screen"> 
     <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.ico" />
+    
+    <script src = "./js/jquery.js" type = "text/javascript"></script>
+    <script src = "./js/monjs.js"></script>
   </head>
+  
   <body>
     <div class="container">
       <header class="row">

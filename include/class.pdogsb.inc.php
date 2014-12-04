@@ -317,19 +317,86 @@ class PdoGsb{
         
         
         public function getVisiteur()
-        {
-            $req = "SELECT id, nom, prenom FROM visiteur order by nom ";
+        {    
+            //afficher tous les visiteur
+            /*
+             * $req = "SELECT id, nom, prenom FROM visiteurorder by nom ";
+             */ 
+            
+            //afficher tous les visiteur avec des fiche de frais cloturée (etat = CL)
+            $req = "SELECT DISTINCT visiteur.id, visiteur.nom, visiteur.prenom 
+                FROM visiteur inner join fichefrais on visiteur.id = fichefrais.idVisiteur
+                WHERE idEtat = 'CL'
+                ORDER BY nom";
             $res = PdoGsb::$monPdo->query($req);
             $lesvisiteur =array();
             $laLigne = $res->fetch();
-            while($laLigne != null)	{
-			$nom = $laLigne['nom'];
-			$prenom = $laLigne['prenom'] ;
-			$id = $laLigne['id'];
-			$lesvisiteur["$id"]=array("id"=>"$id","nom"  => "$nom","prenom"  => "$prenom");
-			$laLigne = $res->fetch(); 		
-		}
-		return $lesvisiteur;
+            while($laLigne != null)	
+            {
+                $nom = $laLigne['nom'];
+                $prenom = $laLigne['prenom'] ;
+                $id = $laLigne['id'];
+                $lesvisiteur["$id"]=array("id"=>"$id","nom"  => "$nom","prenom"  => "$prenom");
+                $laLigne = $res->fetch(); 		
+            }
+            return $lesvisiteur;
         }
+        
+        public function getFicheVisiteur()
+        {
+            $req = "SELECT * FROM  fichefrais WHERE idVisiteur = '".$_REQUEST['lstVisiteur']."' AND idEtat = 'CL'";
+            $res = PdoGsb::$monPdo->query($req);
+            $lesFiches =array();
+            $laLigne = $res->fetch();
+            while($laLigne != null)	
+            {
+                $idV = $laLigne['idVisiteur'];
+                $moisV = $laLigne['mois'] ;
+                /* a completer */
+                $lesFiches["$id"]=array("idV"=>"$idV","moisV"  => "$moisV");
+                $laLigne = $res->fetch(); 		
+            }
+            return $lesFiches;
+        }
+        
+        public function getLigneForfaitFicheVisiteur()
+        {
+            $moisL =  $unVisiteur['moisV'];
+            $req1 = "SELECT * FROM  `lignefraisforfait` WHERE  `idVisiteur` =  '".$_REQUEST['lstVisiteur']."' AND  `mois` =  '".$moisL."'";
+            $res1 = PdoGsb::$monPdo->query($req1);
+            $lesFiches1 =array();
+            $laLigne1 = $res1->fetch();
+            while($laLigne1 != null)	
+            {
+                /* a completer */
+                $idL = $laLigne1['idVisiteur'];
+                $moisL = $laLigne['mois'] ;
+                $lesFiches1["$id"]=array("idV"=>"$idV","moisV"  => "$moisV");
+                $laLigne1 = $res1->fetch(); 		
+            }
+            return $lesFiches1;
+        }
+        
+        public function getLigneHorsForfaitFicheVisiteur()
+        {
+            $moisLH =  $unVisiteur['moisV'];
+            $req2 = "SELECT * FROM  `lignefraishorsforfait` WHERE  `idVisiteur` =  'a55' AND  `mois` =  '201410'";
+            $res2 = PdoGsb::$monPdo->query($req2);
+            $lesFiches2 =array();
+            $laLigne2 = $res2->fetch();
+            while($laLigne2 != null)	
+            {
+                /* a completer */
+                $idLH = $laLigne2['idVisiteur'];
+                $moisLH = $laLigne2['mois'] ;
+                $lesFiches2["$id"]=array("idV"=>"$idV","moisV"  => "$moisV");
+                $laLigne2 = $res2->fetch(); 		
+            }
+            return $lesFiches2;
+        }
+        
+        
+        
+        
 }
 ?>
