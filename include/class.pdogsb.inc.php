@@ -352,28 +352,35 @@ class PdoGsb{
             {
                 $idV = $laLigne['idVisiteur'];
                 $moisV = $laLigne['mois'] ;
-                /* a completer */
-                $lesFiches["$id"]=array("idV"=>"$idV","moisV"  => "$moisV");
+                $lesFiches["$idV"]=array("idV"=>"$idV","moisV"=>"$moisV");
                 $laLigne = $res->fetch(); 		
             }
             return $lesFiches;
         }
         
+        
+        
         public function getLigneForfaitFicheVisiteur()
         {
-            $moisL =  $unVisiteur['moisV'];
-            $req1 = "SELECT * FROM  `lignefraisforfait` WHERE  `idVisiteur` =  '".$_REQUEST['lstVisiteur']."' AND  `mois` =  '".$moisL."'";
-            $res1 = PdoGsb::$monPdo->query($req1);
-            $lesFiches1 =array();
-            $laLigne1 = $res1->fetch();
-            while($laLigne1 != null)	
-            {
-                /* a completer */
-                $idL = $laLigne1['idVisiteur'];
-                $moisL = $laLigne['mois'] ;
-                $lesFiches1["$id"]=array("idV"=>"$idV","moisV"  => "$moisV");
-                $laLigne1 = $res1->fetch(); 		
-            }
+            $Fiches = $pdo->getFicheVisiteur();
+            foreach ($Fiches as $uneFiche)
+                {
+                    $moisL =  $lesFiches['moisV'];
+                    $req1 = "SELECT * FROM  `lignefraisforfait` WHERE  `idVisiteur` =  '".$_REQUEST['lstVisiteur']."' AND  `mois` =  '".$moisL."'";
+                    $res1 = PdoGsb::$monPdo->query($req1);
+                    $lesFiches1 =array();
+                    $laLigne1 = $res1->fetch();
+                    while($laLigne1 != null)	
+                    {
+                        $idL = $laLigne1['idVisiteur'];
+                        $moisL = $laLigne1['mois'] ;
+                        $fraisForfait = $laLigne1['idFraisForfait'];
+                        $quantite = $laLigne1['quantite'];
+                        $lesFiches1["$id"]=array("idL"=>"$idL","moisL"  => "$moisL","fraisForfait" => "$fraisForfait",
+                            "quantite" => "$quantite");
+                        $laLigne1 = $res1->fetch(); 		
+                    }
+                }
             return $lesFiches1;
         }
         

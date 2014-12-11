@@ -29,11 +29,45 @@
     <br>
     <div id="listFiche">
         <fieldset>	 
-            <legend>Fiche de frais à sélectionner: </legend>
+            <legend>Fiche de frais à sélectionner pour le visiteur <?php echo $_REQUEST['lstVisiteur'] ?> :</legend>
             
-            <?php echo $_REQUEST['lstVisiteur'] ?>
+           
+            <?php
+            $Fiches=$pdo->getFicheVisiteur();
+            if(empty($_REQUEST['lstVisiteur']))
+            {
+                echo '';
+            }
+            else
+            {
+//                echo $_REQUEST['lstVisiteur'];
+                
+                ?>
+                <select id="lstVisiteur" name="lstVisiteur" class="form-control">
+
+                <option selected value="">Selectionner une fiche</option>
+                <option value="dfghj"> </option>
+                <?php
+                    foreach ($Fiches as $uneFiche)
+                    {
+                        $id = $uneFiche['idV'];
+                        $mois =  $uneFiche['moisV'];
+                        ?>
+                        <option value="<?php echo $id ?>"><?php echo  $id." - ".$mois ?> </option>
+                        <?php 
+                    }
+                ?>    
+                </select>
             
-            <a href="#" id="btnValid" data-role="button" data-inline="true" data-theme="b" data-mini="true" class="btn btn-primary">Validez</a>
+            <button type="submit" id="btnVal" class="btn btn-primary">Validez</button>
+            <?php
+            }
+            ?><br><?php
+            
+           
+            
+            ?>
+            
         </fieldset>
     </div>  
     <!--<a href="#" id="btnSearch" data-role="button" data-inline="true" data-theme="b" data-mini="true" class="btn btn-primary">rechercher</a>-->
