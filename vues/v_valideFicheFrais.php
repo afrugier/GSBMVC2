@@ -29,11 +29,11 @@
     <br>
     <div id="listFiche">
         <fieldset>	 
-            <legend>Fiche de frais à sélectionner pour le visiteur <?php echo $_REQUEST['lstVisiteur'] ?> :</legend>
+            
             
            
             <?php
-            $Fiches=$pdo->getFicheVisiteur();
+            
             if(empty($_REQUEST['lstVisiteur']))
             {
                 echo '';
@@ -41,8 +41,9 @@
             else
             {
 //                echo $_REQUEST['lstVisiteur'];
-                
+                $Fiches=$pdo->getFicheVisiteur();
                 ?>
+            <legend>Fiche de frais à sélectionner pour le visiteur <?php echo $_REQUEST['lstVisiteur'] ?> :</legend>
                 <select id="lstVisiteur" name="lstVisiteur" class="form-control">
 
                 <option selected value="">Selectionner une fiche</option>
