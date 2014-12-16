@@ -16,9 +16,10 @@ switch($action){
 	}
 	case 'voirEtatFrais':{
 		$leMois = $_REQUEST['lstMois']; 
-		$lesMois=$pdo->getLesMoisDisponibles($idVisiteur);
+		$lesMois = $pdo->getLesMoisDisponibles($idVisiteur);
 		$moisASelectionner = $leMois;
 		include("vues/v_listeMois.php");
+                
 		$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur,$leMois);
 		$lesFraisForfait= $pdo->getLesFraisForfait($idVisiteur,$leMois);
 		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur,$leMois);

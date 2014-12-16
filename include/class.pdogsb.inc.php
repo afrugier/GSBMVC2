@@ -342,9 +342,10 @@ class PdoGsb{
             return $lesvisiteur;
         }
         
-        public function getFicheVisiteur()
+        public function getFicheVisiteur($idVis)
         {
-            $req = "SELECT * FROM  fichefrais WHERE idVisiteur = '".$_REQUEST['lstVisiteur']."' AND idEtat = 'CL'";
+            
+            $req = "SELECT * FROM  fichefrais WHERE idVisiteur = '".$idVis."' AND idEtat = 'CL'";
             $res = PdoGsb::$monPdo->query($req);
             $lesFiches =array();
             $laLigne = $res->fetch();
@@ -352,58 +353,15 @@ class PdoGsb{
             {
                 $idV = $laLigne['idVisiteur'];
                 $moisV = $laLigne['mois'] ;
-                $lesFiches["$idV"]=array("idV"=>"$idV","moisV"=>"$moisV");
+                
+			$numAnnee =substr( $moisV,0,4);
+			$numMois =substr( $moisV,4,2);
+                        
+                $lesFiches["$idV"]=array("idV"=>"$idV","moisV"=>"$moisV","numAnnee"=>"$numAnnee","numMois"=>$numMois);
                 $laLigne = $res->fetch(); 		
             }
             return $lesFiches;
         }
-        
-        
-        
-        public function getLigneForfaitFicheVisiteur()
-        {
-            $Fiches = $pdo->getFicheVisiteur();
-            foreach ($Fiches as $uneFiche)
-                {
-                    $moisL =  $lesFiches['moisV'];
-                    $req1 = "SELECT * FROM  `lignefraisforfait` WHERE  `idVisiteur` =  '".$_REQUEST['lstVisiteur']."' AND  `mois` =  '".$moisL."'";
-                    $res1 = PdoGsb::$monPdo->query($req1);
-                    $lesFiches1 =array();
-                    $laLigne1 = $res1->fetch();
-                    while($laLigne1 != null)	
-                    {
-                        $idL = $laLigne1['idVisiteur'];
-                        $moisL = $laLigne1['mois'] ;
-                        $fraisForfait = $laLigne1['idFraisForfait'];
-                        $quantite = $laLigne1['quantite'];
-                        $lesFiches1["$id"]=array("idL"=>"$idL","moisL"  => "$moisL","fraisForfait" => "$fraisForfait",
-                            "quantite" => "$quantite");
-                        $laLigne1 = $res1->fetch(); 		
-                    }
-                }
-            return $lesFiches1;
-        }
-        
-        public function getLigneHorsForfaitFicheVisiteur()
-        {
-            $moisLH =  $unVisiteur['moisV'];
-            $req2 = "SELECT * FROM  `lignefraishorsforfait` WHERE  `idVisiteur` =  'a55' AND  `mois` =  '201410'";
-            $res2 = PdoGsb::$monPdo->query($req2);
-            $lesFiches2 =array();
-            $laLigne2 = $res2->fetch();
-            while($laLigne2 != null)	
-            {
-                /* a completer */
-                $idLH = $laLigne2['idVisiteur'];
-                $moisLH = $laLigne2['mois'] ;
-                $lesFiches2["$id"]=array("idV"=>"$idV","moisV"  => "$moisV");
-                $laLigne2 = $res2->fetch(); 		
-            }
-            return $lesFiches2;
-        }
-        
-        
-        
         
 }
 ?>
