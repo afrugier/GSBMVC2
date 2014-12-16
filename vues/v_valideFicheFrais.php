@@ -7,7 +7,7 @@
             <select id="lstVisiteur" name="lstVisiteur" class="form-control">
 
                 <option selected value="">Selectionner un visiteur</option>
-                <option value=""> </option>
+                <option value=""> ------------------------------- </option>
                 <?php
                     foreach ($lesVisiteur as $unVisiteur)
                     {

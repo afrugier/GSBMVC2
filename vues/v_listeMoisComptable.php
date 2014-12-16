@@ -1,3 +1,7 @@
+<?php
+if (!empty($idVis))
+{
+?>
 <form class="form-inline" method="post" action="index.php?uc=validFrais&action=voirEtatFrais">
     <div id="listFiche">
         <fieldset>
@@ -5,7 +9,7 @@
                 <select id="lstMois" name="lstMois" class="form-control">
 
                 <option selected value="">Selectionner une fiche</option>
-                <option value=""> </option>
+                <option value=""> ------------------------------- </option>
                 <?php
                     foreach ($Fiches as $uneFiche)
                     {
@@ -27,3 +31,13 @@
         </fieldset>
     </div>  
 </form>
+  <?php
+}
+else
+{
+    echo "<strong>Vous n'avez pas sélectionner de Visiteur</strong>";
+    ?>
+    <input type="button" onclick="history.back()" value="retour">
+    <?php
+}
+  ?>
