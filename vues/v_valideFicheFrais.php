@@ -1,3 +1,12 @@
+<?php
+if(!empty($lesvisiteur))
+{
+    echo '<strong>pas de visiteur avec des fiches de frais cloturée </strong>';
+}
+else
+{
+?>
+
 <form class="form-inline" method="post" action="index.php?uc=validFrais&action=selectionnerMois">
     <div id="listVisiteur">
         <fieldset>	 
@@ -27,3 +36,6 @@
         </fieldset>
     </div>
 </form>
+<?php
+}
+?>

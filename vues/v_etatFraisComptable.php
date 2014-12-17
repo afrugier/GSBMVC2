@@ -30,12 +30,12 @@ if (!empty($_REQUEST['lstMois']))
                 <tr>
         <?php
           foreach (  $lesFraisForfait as $unFraisForfait  ) 
-		  {
-				$quantite = $unFraisForfait['quantite'];
+                {
+                    $quantite = $unFraisForfait['quantite'];
 		?>
                 <td class="qteForfait"><?php echo $quantite?> </td>
-		 <?php
-          }
+                <?php
+                }
 		?>
 		</tr>
             </tbody>
@@ -45,36 +45,42 @@ if (!empty($_REQUEST['lstMois']))
      
      ?>
   	<table class="table table-bordered">
-  	   <caption>Descriptif des éléments hors forfait -<?php echo $nbJustificatifs ?> justificatifs reçus -
+  	   <caption>Descriptif des éléments hors forfait - <?php echo $nbJustificatifs ?> justificatifs reçus -
        </caption>
             <thead>
              <tr>
                 <th class="date">Date</th>
                 <th class="libelle">Libellé</th>
-                <th class='montant'>Montant</th>                
+                <th class='montant'>Montant</th>   
              </tr>
             </thead>
             <tbody>
-        <?php      
-          foreach ( $lesFraisHorsForfait as $unFraisHorsForfait ) 
-		  {
-			$date = $unFraisHorsForfait['date'];
-			$libelle = $unFraisHorsForfait['libelle'];
-			$montant = $unFraisHorsForfait['montant'];
-		?>
-             <tr>
+        <?php 
+        $i = 0 ;   
+        foreach ( $lesFraisHorsForfait as $unFraisHorsForfait )
+        {
+            
+            $date = $unFraisHorsForfait['date'];
+            $libelle = $unFraisHorsForfait['libelle'];
+            $montant = $unFraisHorsForfait['montant'];
+            ?>
+            <tr>
                 <td><?php echo $date ?></td>
                 <td><?php echo $libelle ?></td>
                 <td><?php echo $montant ?></td>
-             </tr>
-            
+                <td><input type="checkbox" name="cbSuppr" value="<?php echo $i ?>"><?php echo $i ?></td>
+            </tr>
         <?php 
-          }
+        $i++;
+        }
 		?>
             </tbody>
     </table>
+     
+     <button class="btn btn-danger" id="btnSuppr">Supprimer les fiches de frais seléctionner</button>
      <?php 
-     }
+     
+        }
      else {
          echo "<strong>Vous n'avez pas d'élément hors forfait pour ce mois.</strong>";
      }

@@ -35,9 +35,10 @@ if (!empty($idVis))
 }
 else
 {
-    echo "<strong>Vous n'avez pas sélectionner de Visiteur</strong>";
     ?>
-    <input type="button" onclick="history.back()" value="retour">
+    <strong>Vous n'avez pas sélectionner de Visiteur</strong>
+    <br>
+    <button id="btnSearch" class="btn btn-primary" onclick="history.back()">retour</button>
     <?php
 }
   ?>
