@@ -358,19 +358,18 @@ class PdoGsb{
         public function getFicheVisiteur($idVis)
         {
             
-            $req = "SELECT * FROM  fichefrais WHERE idVisiteur = '".$idVis."' AND idEtat = 'CL'";
+            $req = "SELECT * FROM fichefrais WHERE idVisiteur = '".$idVis."' AND idEtat = 'CL'";
             $res = PdoGsb::$monPdo->query($req);
             $lesFiches =array();
             $laLigne = $res->fetch();
-            while($laLigne != null)	
+            while($laLigne)	
             {
                 $idV = $laLigne['idVisiteur'];
                 $moisV = $laLigne['mois'] ;
-                
-			$numAnnee =substr( $moisV,0,4);
-			$numMois =substr( $moisV,4,2);
+                    $numAnnee =substr( $moisV,0,4);
+                    $numMois =substr( $moisV,4,2);
                         
-                $lesFiches["$idV"]=array("idV"=>"$idV","moisV"=>"$moisV","numAnnee"=>"$numAnnee","numMois"=>$numMois);
+                $lesFiches[]=array("idV"=>"$idV","moisV"=>"$moisV","numAnnee"=>"$numAnnee","numMois"=>$numMois);
                 $laLigne = $res->fetch(); 		
             }
             return $lesFiches;
@@ -379,8 +378,24 @@ class PdoGsb{
         public function supprFiche($idVis, $mois, $idF, $raisonSuppr)
         {
             $req = "UPDATE `lignefraishorsforfait` SET `Suppr`= 1, `raison_suppr`='".$raisonSuppr."' WHERE `idVisiteur`= '".$idVis."' and `id`= '".$idF."' and `mois`= '".$mois."'";
-            $res = PdoGsb::$monPdo->query($req);
+            $res = PdoGsb::$monPdo->exec($req);
         }
         
+        public function modifFiche($l0,$l1,$l2,$l3,$lib0,$lib1,$lib2,$lib3,$idVis,$mois)
+        {
+            $req0 = "UPDATE `lignefraisforfait` SET `quantite`='".$l0."' WHERE `idVisiteur`= '".$idVis."' and `idFraisForfait`= '".$lib0."' and `mois`= '".$mois."'";
+            $res0 = PdoGsb::$monPdo->exec($req0);
+            $req1 = "UPDATE `lignefraisforfait` SET `quantite`='".$l1."' WHERE `idVisiteur`= '".$idVis."' and `idFraisForfait`= '".$lib1."' and `mois`= '".$mois."'";
+            $res1 = PdoGsb::$monPdo->exec($req1);
+            $req2 = "UPDATE `lignefraisforfait` SET `quantite`='".$l2."' WHERE `idVisiteur`= '".$idVis."' and `idFraisForfait`= '".$lib2."' and `mois`= '".$mois."'";
+            $res2 = PdoGsb::$monPdo->exec($req2);
+            $req3 = "UPDATE `lignefraisforfait` SET `quantite`='".$l3."' WHERE `idVisiteur`= '".$idVis."' and `idFraisForfait`= '".$lib3."' and `mois`= '".$mois."'";
+            $res3 = PdoGsb::$monPdo->exec($req3);
+        }
+        
+        public function validFiche($idVis, $mois)
+        {
+            $req0 = "UPDATE `fichefrais` SET `idEtat`= 'VA' WHERE `idVisiteur`= '".$idVis."' and `mois`= '".$mois."'";
+        }
 }
 ?>
