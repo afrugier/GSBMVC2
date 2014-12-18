@@ -90,7 +90,20 @@ class PdoGsb{
 */
 	public function getLesFraisHorsForfait($idVisiteur,$mois){
 	    $req = "select * from lignefraishorsforfait where lignefraishorsforfait.idvisiteur ='$idVisiteur' 
-		and lignefraishorsforfait.mois = '$mois' ";	
+		and lignefraishorsforfait.mois = '$mois' and lignefraishorsforfait.Suppr = 0 ";	
+		$res = PdoGsb::$monPdo->query($req);
+		$lesLignes = $res->fetchAll();
+		$nbLignes = count($lesLignes);
+		for ($i=0; $i<$nbLignes; $i++){
+			$date = $lesLignes[$i]['date'];
+			$lesLignes[$i]['date'] =  dateAnglaisVersFrancais($date);
+		}
+		return $lesLignes; 
+	}
+        
+	public function getLesFraisHorsForfaitSuppr($idVisiteur,$mois){
+	    $req = "select * from lignefraishorsforfait where lignefraishorsforfait.idvisiteur ='$idVisiteur' 
+		and lignefraishorsforfait.mois = '$mois' and lignefraishorsforfait.Suppr = 1 ";	
 		$res = PdoGsb::$monPdo->query($req);
 		$lesLignes = $res->fetchAll();
 		$nbLignes = count($lesLignes);
@@ -361,6 +374,12 @@ class PdoGsb{
                 $laLigne = $res->fetch(); 		
             }
             return $lesFiches;
+        }
+        
+        public function supprFiche($idVis, $mois, $idF, $raisonSuppr)
+        {
+            $req = "UPDATE `lignefraishorsforfait` SET `Suppr`= 1, `raison_suppr`='".$raisonSuppr."' WHERE `idVisiteur`= '".$idVis."' and `id`= '".$idF."' and `mois`= '".$mois."'";
+            $res = PdoGsb::$monPdo->query($req);
         }
         
 }

@@ -46,7 +46,7 @@ if (!empty($_REQUEST['lstMois']))
      ?>
   	<table class="table table-bordered">
   	   <caption>Descriptif des éléments hors forfait - <?php echo $nbJustificatifs ?> justificatifs reçus -
-       </caption>
+        </caption>
             <thead>
              <tr>
                 <th class="date">Date</th>
@@ -56,30 +56,78 @@ if (!empty($_REQUEST['lstMois']))
             </thead>
             <tbody>
         <?php 
-        $i = 0 ;   
         foreach ( $lesFraisHorsForfait as $unFraisHorsForfait )
         {
             
             $date = $unFraisHorsForfait['date'];
             $libelle = $unFraisHorsForfait['libelle'];
             $montant = $unFraisHorsForfait['montant'];
+            $id = $unFraisHorsForfait['id'];
             ?>
             <tr>
                 <td><?php echo $date ?></td>
                 <td><?php echo $libelle ?></td>
                 <td><?php echo $montant ?></td>
-                <td><input type="checkbox" name="cbSuppr" value="<?php echo $i ?>"><?php echo $i ?></td>
+                <td>
+                    <form method="post" action="index.php?uc=validFrais&action=validSuppr">
+                        <input type="hidden" id="idVisiteur" name="idVisiteur" value="<?php echo $idVis ?>">
+                        <input type="hidden" id="idMois" name="idMois" value="<?php echo $leMois ?>">
+                        <input type="hidden" id="idF" name="idF" value="<?php echo $id ?>">
+                        <button type="submit" class="btn btn-danger" id="btnSuppr">X</button>
+                    </form>
+                </td>
             </tr>
         <?php 
-        $i++;
         }
 		?>
             </tbody>
-    </table>
+        </table>
+    <?php
+        if(empty($lesFraisHorsForfaitSuppr))
+        {
+            ?>
+            <table><caption>Pas de frais hors forfait supprimé</caption></table>
+            <?php
+        }
+        else
+        {
+         
+    ?>
+  	<table class="table table-bordered">
+  	   <caption>Descriptif des éléments hors forfait supprimés</caption>
+            <thead>
+             <tr>
+                <th class="date">Date</th>
+                <th class="libelle">Libellé</th>
+                <th class='montant'>Montant</th>   
+                <th class='raison'>Raison Suppression</th>   
+             </tr>
+            </thead>
+            <tbody>
+        <?php 
+        foreach ( $lesFraisHorsForfaitSuppr as $unFraisHorsForfaitSuppr )
+        {
+            
+            $date1 = $unFraisHorsForfaitSuppr['date'];
+            $libelle1 = $unFraisHorsForfaitSuppr['libelle'];
+            $montant1 = $unFraisHorsForfaitSuppr['montant'];
+            $raisonSuppr = $unFraisHorsForfaitSuppr['raison_suppr'];
+            ?>
+            <tr>
+                <td><?php echo $date1 ?></td>
+                <td><?php echo $libelle1 ?></td>
+                <td><?php echo $montant1 ?></td>
+                <td><?php echo $raisonSuppr ?></td>
+            </tr>
+        <?php 
+        }
+		?>
+            </tbody>
+        </table>
      
-     <button class="btn btn-danger" id="btnSuppr">Supprimer les fiches de frais seléctionner</button>
-     <?php 
-     
+     <?php
+        }
+        
         }
      else {
          echo "<strong>Vous n'avez pas d'élément hors forfait pour ce mois.</strong>";
